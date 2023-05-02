@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+
+    php-apache-environment:
+        container_name: php-apache
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: redlock-web-2.0
+        depends_on:
+            - db
+        volumes:
+            - ./index.php:/var/www/html/index.php
+        ports:
+            - "7077:80"
+
+    db:
+        container_name: redlock-db
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_USERNAME: root
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - ./redlock-db.sql:/docker-entrypoint-initdb.d/redlock-db.sql
